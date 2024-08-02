@@ -5,7 +5,7 @@ import pandas as pd
 menu_items_df = pd.read_csv('dish_data.csv')
 
 # Read questions from JSON file
-with open('user_questions.json.txt', 'r') as f:
+with open('user_questions.json', 'r') as f:
     questions = json.load(f)
 
 # Convert DataFrame to list of dictionaries (each representing a menu item)
@@ -16,6 +16,8 @@ def create_entry(menu_item):
     documents = []
     for q in questions:
         field_value = menu_item.get(q['field'], "N/A")
+        field_id = menu_item.get(q['field_id'], "N/A")
+
         
         # Customize the text based on the section and question
         if q['section'] == 'ingredients':
@@ -46,7 +48,7 @@ def create_entry(menu_item):
             text = f"The {menu_item['name']} contains {field_value}"
 
         documents.append({
-            "id": f"{menu_item['id']}_{q['field']}",
+            "id": f"{menu_item['id']}_{q['field_id']}",
             "question": q["question"],
             "section": q["section"],
             "text": text
